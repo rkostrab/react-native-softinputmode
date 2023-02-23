@@ -1,31 +1,24 @@
 # react-native-softinputmode
 
-setting SoftInputMode 
+Setting SoftInputMode programmatically in Android from React Native
 
 ## Installation
 
 ```sh
-npm install react-native-softinputmode
+yarn add react-native-softinputmode
 ```
 
 ## Usage
 
 ```js
-import { multiply } from 'react-native-softinputmode';
+import Softinputmode from 'react-native-softinputmode';
 
 // ...
 
-const result = await multiply(3, 7);
+Softinputmode.set(Softinputmode.ADJUST_RESIZE);
+Softinputmode.set(Softinputmode.ADJUST_PAN);
 ```
-
-## Contributing
-
-See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
 
 ## License
 
 MIT
-
----
-
-Made with [create-react-native-library](https://github.com/callstack/react-native-builder-bob)
