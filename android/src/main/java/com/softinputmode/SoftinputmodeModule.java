@@ -1,7 +1,13 @@
 package com.softinputmode;
 
 import androidx.annotation.NonNull;
-
+import android.app.Activity;
+import android.os.Handler;
+import android.os.Message;
+import android.view.WindowManager;
+import java.util.HashMap;
+import java.util.Map;
+import javax.annotation.Nullable;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -22,11 +28,34 @@ public class SoftinputmodeModule extends ReactContextBaseJavaModule {
     return NAME;
   }
 
+  private static final String ADJUST_PAN = "ADJUST_PAN";
+  private static final String ADJUST_RESIZE = "ADJUST_RESIZE";
 
-  // Example method
-  // See https://reactnative.dev/docs/native-modules-android
+  private Handler handler = new Handler(getReactApplicationContext().getMainLooper()){
+      
+      @Override
+      public void handleMessage(Message message) {
+        Activity activity = getCurrentActivity();
+        if (activity != null) {
+            activity.getWindow().setSoftInputMode(message.what);
+        }
+      }
+
+  };
+
+  @Nullable
+  @Override
+  public Map<String, Object> getConstants() {
+      final Map<String, Object> constants = new HashMap<>();
+      constants.put(ADJUST_PAN, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+      constants.put(ADJUST_RESIZE, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+      return constants;
+  }
+
   @ReactMethod
-  public void multiply(double a, double b, Promise promise) {
-    promise.resolve(a * b);
+  public void set(int type) {
+      Message msg = Message.obtain();
+      msg.what = type;
+      handler.sendMessageDelayed(msg, 0);
   }
 }
